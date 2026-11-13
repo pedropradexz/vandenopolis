@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vandenópolis Digital — Portal da Cidade Inteligente</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            vanden: {
+              green: '#008744',
+              greenDark: '#006633',
+              greenLight: '#E6F5EC',
+              yellow: '#FACC15',
+              yellowDark: '#CA8A04',
+              yellowLight: '#FEF9C3',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Variáveis base e escalonamento dinâmico de fonte para acessibilidade */
+    :root {
+      --base-font-size: 16px;
+    }
+
+    html {
+      font-size: var(--base-font-size);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Anel de foco visível para navegação via teclado (WCAG 2.1 AA/AAA) */
+    *:focus-visible {
+      outline: 3px solid #CA8A04 !important;
+      outline-offset: 3px !important;
+      border-radius: 6px;
+    }
+
+    /* Modo Leitura Facilitada / Dislexia (espaçamento ampliado) */
+    body.readable-spacing {
+      letter-spacing: 0.045em !important;
+      word-spacing: 0.12em !important;
+      line-height: 1.75 !important;
+    }
+
+    body.readable-spacing p,
+    body.readable-spacing span,
+    body.readable-spacing td,
+    body.readable-spacing th,
+    body.readable-spacing label,
+    body.readable-spacing input,
+    body.readable-spacing select,
+    body.readable-spacing button {
+      letter-spacing: 0.04em !important;
+      line-height: 1.7 !important;
+    }
+
+    /* Modo Alto Contraste (Preto, Branco e Amarelo Ouro) */
+    body.high-contrast {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+    }
+
+    body.high-contrast .bg-white,
+    body.high-contrast .bg-slate-50,
+    body.high-contrast .bg-slate-100,
+    body.high-contrast .bg-vanden-greenLight,
+    body.high-contrast .bg-vanden-yellowLight,
+    body.high-contrast .bg-emerald-50,
+    body.high-contrast .bg-amber-50,
+    body.high-contrast .bg-red-50,
+    body.high-contrast .bg-blue-50 {
+      background-color: #0A0A0A !important;
+      color: #FFFFFF !important;
+      border-color: #FACC15 !important;
+    }
+
+    body.high-contrast header.main-header {
+      background: #000000 !important;
+      border-bottom: 2px solid #FACC15 !important;
+    }
+
+    body.high-contrast .text-slate-900,
+    body.high-contrast .text-slate-800,
+    body.high-contrast .text-slate-700,
+    body.high-contrast .text-slate-600,
+    body.high-contrast .text-slate-500,
+    body.high-contrast .text-vanden-green,
+    body.high-contrast .text-vanden-greenDark,
+    body.high-contrast .text-emerald-800,
+    body.high-contrast .text-amber-800,
+    body.high-contrast .text-red-800 {
+      color: #FFFFFF !important;
+    }
+
+    body.high-contrast .text-accent-hc,
+    body.high-contrast h1,
+    body.high-contrast h2,
+    body.high-contrast h3 {
+      color: #FACC15 !important;
+    }
+
+    body.high-contrast .border-slate-200,
+    body.high-contrast .border-slate-300,
+    body.high-contrast .border-emerald-200,
+    body.high-contrast .border-amber-200 {
+      border-color: #FACC15 !important;
+    }
+
+    body.high-contrast button.btn-primary,
+    body.high-contrast .bg-vanden-green {
+      background-color: #FACC15 !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+      border: 2px solid #FFFFFF !important;
+    }
+
+    body.high-contrast input,
+    body.high-contrast select,
+    body.high-contrast textarea {
+      background-color: #000000 !important;
+      color: #FACC15 !important;
+      border: 2px solid #FACC15 !important;
+    }
+
+    /* Link de pular para o conteúdo principal */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 16px;
+      background: #FACC15;
+      color: #0F172A;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 8px;
+      z-index: 100;
+      transition: top 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    /* Animação suave de entrada */
+    @keyframes fadeInSlide {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in {
+      animation: fadeInSlide 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-vanden-yellow selection:text-slate-900">
+
+  <!-- Link de Acessibilidade: Pular para o conteúdo -->
+  <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- BARRA SUPERIOR DE ACESSIBILIDADE (WCAG) -->
+  <aside aria-label="Barra de Acessibilidade" class="bg-slate-900 text-white border-b border-slate-700 py-2 px-4 text-xs sm:text-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-vanden-yellow text-slate-900 font-bold" aria-hidden="true">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <circle cx="12" cy="5" r="2"></circle>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 9h14M12 9v6m0 0l-3 5m3-5l3 5"></path>
+          </svg>
+        </span>
+        <span class="font-semibold tracking-wide text-slate-200 hidden sm:inline">Acessibilidade Vandenópolis:</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2" role="toolbar" aria-label="Controles de leitura e contraste">
+        <!-- Tamanho da Fonte -->
+        <div class="inline-flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700" role="group" aria-label="Tamanho do texto">
+          <button type="button" onclick="changeFontSize(-1)" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte" class="px-2.5 py-1 rounded-md hover:bg-slate-700 text-slate-200 font-bold transition">
+            A-
+          </button>
+          <button type="button" onclick="resetFontSize()" aria-label="Restaurar tamanho padrão da fonte" title="Fonte padrão" class="px-2.5 py-1 rounded-md hover:bg-slate-700 text-vanden-yellow font-bold transition border-x border-slate-700">
+            A
+          </button>
+          <button type="button" onclick="changeFontSize(1)" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte" class="px-2.5 py-1 rounded-md hover:bg-slate-700 text-slate-200 font-bold transition">
+            A+
+          </button>
+        </div>
+
+        <!-- Alto Contraste -->
+        <button type="button" id="btn-contrast" onclick="toggleHighContrast()" aria-pressed="false" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-medium transition">
+          <svg class="w-4 h-4 text-vanden-yellow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor"></path>
+          </svg>
+          <span>Alto Contraste</span>
+        </button>
+
+        <!-- Espaçamento / Dislexia -->
+        <button type="button" id="btn-spacing" onclick="toggleReadableSpacing()" aria-pressed="false" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-medium transition">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"></path>
+          </svg>
+          <span class="hidden md:inline">Espaçamento Leitura</span>
+          <span class="md:hidden">Leitura+</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CABEÇALHO INSTITUCIONAL -->
+  <header class="main-header bg-white border-b-4 border-vanden-yellow shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <!-- Brasão / Identidade Visual Vandenópolis -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-vanden-green to-emerald-700 flex items-center justify-center shadow-md border-2 border-vanden-yellow shrink-0" aria-hidden="true">
+          <svg class="w-7 h-7 text-vanden-yellow" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-vanden-green">Vandenópolis</span>
+            <span class="px-2 py-0.5 text-xs font-bold uppercase tracking-wider rounded-full bg-vanden-yellow text-slate-900">Smart City</span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 font-medium">Portal Integrado de Serviços ao Cidadão</p>
+        </div>
+      </div>
+
+      <!-- Área do Cidadão Autenticado (visível após login) -->
+      <div id="user-header-info" class="hidden items-center gap-3 bg-vanden-greenLight border border-emerald-200 px-4 py-2 rounded-2xl">
+        <div class="w-9 h-9 rounded-full bg-vanden-green text-white font-bold flex items-center justify-center shrink-0" aria-hidden="true">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+        </div>
+        <div class="text-left">
+          <p class="text-sm font-bold text-slate-900 leading-tight" id="display-citizen-name">Cidadão(ã) de Vandenópolis</p>
+          <p class="text-xs text-vanden-greenDark font-semibold" id="display-citizen-cpf">CPF: •••.•••.•••-••</p>
+        </div>
+        <button type="button" onclick="logoutCitizen()" class="ml-2 px-3 py-1.5 rounded-xl bg-white hover:bg-red-50 text-red-700 border border-red-200 text-xs font-bold transition shadow-sm">
+          Sair
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- TELA 1: IDENTIFICAÇÃO POR CPF (LOGIN FICTÍCIO) -->
+    <section id="login-screen" aria-labelledby="login-heading" class="max-w-xl mx-auto my-4 sm:my-10 animate-fade-in">
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+        <!-- Faixa decorativa verde e amarela -->
+        <div class="bg-gradient-to-r from-vanden-green via-emerald-700 to-vanden-green p-6 sm:p-8 text-white relative">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vanden-yellow text-slate-900 text-xs font-extrabold mb-3">
+            <span class="w-2 h-2 rounded-full bg-vanden-green animate-pulse"></span>
+            Acesso Digital Unificado
+          </div>
+          <h1 id="login-heading" class="font-display text-2xl sm:text-3xl font-extrabold leading-tight">
+            Bem-vindo(a) a Vandenópolis
+          </h1>
+          <p class="mt-2 text-emerald-50 text-sm sm:text-base">
+            Identifique-se com seu CPF para acessar monitoramento urbano em tempo real, iluminação pública, boletim escolar e matrículas.
+          </p>
+        </div>
+
+        <form id="cpf-login-form" onsubmit="handleCitizenLogin(event)" class="p-6 sm:p-8 space-y-5" novalidate>
+          <div>
+            <label for="cpf-input" class="block text-sm font-bold text-slate-800 mb-1.5">
+              Número do CPF (11 dígitos)
+            </label>
+            <div class="relative">
+              <input
+                type="text"
+                id="cpf-input"
+                name="cpf"
+                inputmode="numeric"
+                maxlength="14"
+                placeholder="000.000.000-00"
+                aria-describedby="cpf-help cpf-error"
+                required
+                class="w-full px-4 py-3.5 text-lg font-semibold tracking-wider rounded-xl border-2 border-slate-300 bg-slate-50 text-slate-900 focus:border-vanden-green focus:bg-white transition"
+              >
+              <button
+                type="button"
+                onclick="fillDemoCPF()"
+                class="mt-2 sm:mt-0 sm:absolute sm:right-2.5 sm:top-1/2 sm:-translate-y-1/2 px-3 py-1.5 rounded-lg bg-vanden-yellowLight hover:bg-vanden-yellow text-slate-900 border border-amber-300 text-xs font-bold transition"
+              >
+                Usar CPF de Teste
+              </button>
+            </div>
+            <p id="cpf-help" class="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-vanden-green shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Ambiente demonstrativo: qualquer sequência válida de 11 números libera o acesso.</span>
+            </p>
+            <p id="cpf-error" role="alert" class="hidden mt-2 text-sm font-semibold text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg"></p>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-primary w-full py-3.5 px-6 rounded-xl bg-vanden-green hover:bg-vanden-greenDark text-white font-display font-bold text-base sm:text-lg shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+          >
+            <span>Entrar no Portal do Cidadão</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TELA 2: PAINEL PRINCIPAL DO CIDADÃO (OCULTO ATÉ O LOGIN) -->
+    <div id="portal-dashboard" class="hidden space-y-6 animate-fade-in">
+
+      <!-- Navegação por Abas dos Serviços -->
+      <nav aria-label="Serviços da Cidade Inteligente" class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap gap-2">
+        <button
+          type="button"
+          id="tab-btn-cidade"
+          onclick="switchTab('cidade')"
+          aria-selected="true"
+          role="tab"
+          class="flex-1 min-w-[160px] py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 bg-vanden-green text-white shadow-sm transition"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+          </svg>
+          <span>Clima, Trânsito e Luz</span>
+        </button>
+
+        <button
+          type="button"
+          id="tab-btn-educacao"
+          onclick="switchTab('educacao')"
+          aria-selected="false"
+          role="tab"
+          class="flex-1 min-w-[160px] py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-vanden-yellowLight transition"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+          </svg>
+          <span>Educação, Boletim e Vagas</span>
+        </button>
+      </nav>
+
+      <!-- ========================================================= -->
+      <!-- ABA 1: MONITORAMENTO URBANO (CLIMA, TRÂNSITO, ILUMINAÇÃO) -->
+      <!-- ========================================================= -->
+      <section id="panel-cidade" role="tabpanel" aria-labelledby="tab-btn-cidade" class="space-y-6">
+
+        <!-- Banner de Status Geral da Cidade -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vanden-greenLight text-vanden-greenDark text-xs font-bold mb-1">
+              <span class="w-2 h-2 rounded-full bg-vanden-green animate-ping"></span>
+              Sensores IoT Ativos • Atualizado agora
+            </div>
+            <h2 class="font-display text-xl sm:text-2xl font-extrabold text-slate-900">Painel Operacional de Vandenópolis</h2>
+            <p class="text-sm text-slate-600">Acompanhe as condições meteorológicas, mobilidade urbana e a rede inteligente de iluminação.</p>
+          </div>
+          <div class="flex items-center gap-3 bg-vanden-yellowLight border border-amber-300 px-4 py-2.5 rounded-xl">
+            <span class="text-2xl" aria-hidden="true">☀️</span>
+            <div>
+              <p class="text-xs font-bold uppercase text-amber-900">Qualidade do Ar</p>
+              <p class="text-sm font-extrabold text-slate-900">Excelente (IQA 24)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid: Clima + Trânsito e Acidentes -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- CARD DE CLIMA (5 colunas no desktop) -->
+          <article aria-labelledby="weather-heading" class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 id="weather-heading" class="font-display text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                  <span class="p-2 rounded-xl bg-vanden-yellowLight text-amber-700" aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <path stroke-linecap="round" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+                    </svg>
+                  </span>
+                  <span>Clima em Vandenópolis</span>
+                </h3>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-vanden-green border border-emerald-200">Estação Centro</span>
+              </div>
+
+              <div class="flex items-center justify-between bg-gradient-to-br from-vanden-green to-emerald-700 text-white rounded-2xl p-5 mb-5 shadow-inner">
+                <div>
+                  <p class="text-4xl sm:text-5xl font-display font-extrabold">27°C</p>
+                  <p class="text-sm font-semibold text-vanden-yellow mt-1">Ensolarado com poucas nuvens</p>
+                  <p class="text-xs text-emerald-100 mt-0.5">Sensação térmica: 28°C</p>
+                </div>
+                <div class="text-right space-y-1 text-xs sm:text-sm">
+                  <p class="bg-white/15 px-2.5 py-1 rounded-lg">💧 Umidade: <strong>58%</strong></p>
+                  <p class="bg-white/15 px-2.5 py-1 rounded-lg">💨 Vento: <strong>14 km/h</strong></p>
+                  <p class="bg-white/15 px-2.5 py-1 rounded-lg">☀️ Índice UV: <strong>Moderado (5)</strong></p>
+                </div>
+              </div>
+
+              <!-- Previsão 3 Dias -->
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Previsão para os próximos dias</p>
+                <div class="grid grid-cols-3 gap-2.5 text-center">
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs font-bold text-slate-700">Amanhã</p>
+                    <p class="text-xl my-1" aria-hidden="true">⛅</p>
+                    <p class="text-xs font-extrabold text-slate-900">26° / 18°</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs font-bold text-slate-700">Domingo</p>
+                    <p class="text-xl my-1" aria-hidden="true">🌦️</p>
+                    <p class="text-xs font-extrabold text-slate-900">23° / 17°</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="text-xs font-bold text-slate-700">Segunda</p>
+                    <p class="text-xl my-1" aria-hidden="true">☀️</p>
+                    <p class="text-xs font-extrabold text-slate-900">28° / 18°</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- CARD DE TRÂNSITO E ACIDENTES (7 colunas no desktop) -->
+          <article aria-labelledby="traffic-heading" class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <h3 id="traffic-heading" class="font-display text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                  <span class="p-2 rounded-xl bg-vanden-greenLight text-vanden-green" aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                  </span>
+                  <span>Trânsito e Ocorrências Viárias</span>
+                </h3>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-vanden-yellowLight text-amber-900 border border-amber-300">Mobilidade Inteligente</span>
+              </div>
+
+              <!-- Fluxo nas Principais Vias -->
+              <div class="mb-5">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Fluxo nas Principais Vias</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-emerald-900">Av. das Palmeiras</span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-vanden-green" aria-hidden="true"></span>
+                    </div>
+                    <p class="text-sm font-extrabold text-vanden-greenDark mt-1">Fluxo Livre</p>
+                    <p class="text-xs text-slate-600">Vel. média: 58 km/h</p>
+                  </div>
+
+                  <div class="p-3 rounded-xl bg-amber-50 border border-amber-200">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-amber-900">Av. Brasil (Centro)</span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+                    </div>
+                    <p class="text-sm font-extrabold text-amber-800 mt-1">Trânsito Moderado</p>
+                    <p class="text-xs text-slate-600">Vel. média: 34 km/h</p>
+                  </div>
+
+                  <div class="p-3 rounded-xl bg-red-50 border border-red-200">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-red-900">Rod. Norte km 12</span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-red-600" aria-hidden="true"></span>
+                    </div>
+                    <p class="text-sm font-extrabold text-red-800 mt-1">Lentidão Local</p>
+                    <p class="text-xs text-slate-600">Faixa direita bloqueada</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Boletim de Acidentes e Alertas -->
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Alertas de Acidentes e Interdições</p>
+                <ul class="space-y-2.5" aria-label="Lista de acidentes e ocorrências de trânsito">
+                  <li class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-start gap-3">
+                      <span class="px-2 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-extrabold shrink-0">ACIDENTE</span>
+                      <div>
+                        <p class="text-sm font-bold text-slate-900">Colisão entre dois veículos leves — Rodovia Norte, km 12</p>
+                        <p class="text-xs text-slate-600">Sem vítimas graves. Agentes de trânsito e guincho no local.</p>
+                      </div>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500 shrink-0">Há 18 min</span>
+                  </li>
+
+                  <li class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-start gap-3">
+                      <span class="px-2 py-1 rounded-lg bg-amber-100 text-amber-900 text-xs font-extrabold shrink-0">ATENÇÃO</span>
+                      <div>
+                        <p class="text-sm font-bold text-slate-900">Manutenção de semáforo inteligente — Cruzamento Rua Ipê x Av. Brasil</p>
+                        <p class="text-xs text-slate-600">Operando em amarelo intermitente. Redobre a atenção.</p>
+                      </div>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500 shrink-0">Há 42 min</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- SEÇÃO DE ILUMINAÇÃO PÚBLICA INTELIGENTE -->
+        <article aria-labelledby="lighting-heading" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+            <div>
+              <h3 id="lighting-heading" class="font-display text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="p-2 rounded-xl bg-vanden-yellowLight text-amber-700" aria-hidden="true">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                  </svg>
+                </span>
+                <span>Telegestão de Iluminação Pública LED</span>
+              </h3>
+              <p class="text-sm text-slate-600 mt-1">Monitoramento em tempo real dos 14.200 pontos de luz conectados da cidade.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="px-4 py-2 rounded-xl bg-vanden-greenLight border border-emerald-200 text-right">
+                <span class="block text-xs font-bold text-vanden-greenDark">Operação Geral</span>
+                <span class="text-lg font-display font-extrabold text-vanden-green" id="lighting-overall-pct">98,7% Ativo</span>
+              </div>
+              <button
+                type="button"
+                onclick="openLightReportModal()"
+                class="btn-primary px-4 py-3 rounded-xl bg-vanden-yellow hover:bg-amber-400 text-slate-900 font-bold text-sm shadow-sm transition flex items-center gap-2"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>Reportar Poste Apagado</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Status por Bairro -->
+          <div id="neighborhood-lighting-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-5">
+            <!-- Preenchido dinamicamente via JavaScript -->
+          </div>
+
+          <!-- Chamados Recentes de Iluminação -->
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Últimas Solicitações de Manutenção Registradas</h4>
+            <ul id="light-reports-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- Preenchido dinamicamente via JavaScript -->
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- ABA 2: EDUCAÇÃO (BOLETIM ESCOLAR + VAGAS E MATRÍCULA)     -->
+      <!-- ========================================================= -->
+      <section id="panel-educacao" role="tabpanel" aria-labelledby="tab-btn-educacao" class="hidden space-y-8">
+
+        <!-- MÓDULO A: CONSULTA DE NOTAS E FREQUÊNCIA ESCOLAR -->
+        <article aria-labelledby="grades-heading" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <div class="border-b border-slate-200 pb-4 mb-6">
+            <span class="inline-block px-3 py-1 rounded-full bg-vanden-yellowLight text-amber-900 text-xs font-extrabold mb-2">Rede Municipal de Ensino</span>
+            <h2 id="grades-heading" class="font-display text-xl sm:text-2xl font-extrabold text-slate-900">
+              Consulta de Boletim e Frequência Escolar
+            </h2>
+            <p class="text-sm text-slate-600 mt-1">
+              Informe o <strong>Registro de Matrícula (4 números)</strong> do aluno e selecione a unidade escolar para visualizar notas bimestrais e frequência.
+            </p>
+          </div>
+
+          <!-- Formulário de Busca do Aluno -->
+          <form onsubmit="handleStudentSearch(event)" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200">
+            <div class="md:col-span-4">
+              <label for="student-reg-input" class="block text-sm font-bold text-slate-800 mb-1.5">
+                Registro de Matrícula (4 dígitos)
+              </label>
+              <input
+                type="text"
+                id="student-reg-input"
+                inputmode="numeric"
+                maxlength="4"
+                placeholder="Ex: 1024"
+                required
+                class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold text-base tracking-widest focus:border-vanden-green"
+              >
+            </div>
+
+            <div class="md:col-span-5">
+              <label for="student-school-select" class="block text-sm font-bold text-slate-800 mb-1.5">
+                Unidade Escolar
+              </label>
+              <select
+                id="student-school-select"
+                required
+                class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-semibold text-base focus:border-vanden-green"
+              >
+                <option value="E.M. Prof. Paulo Freire">E.M. Prof. Paulo Freire (Centro)</option>
+                <option value="E.M. Monteiro Lobato">E.M. Monteiro Lobato (Jardim Verde)</option>
+                <option value="E.M. Tiradentes">E.M. Tiradentes (Vila Sol)</option>
+                <option value="C.E. Vandenópolis">C.E. Vandenópolis (Bela Vista)</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-3">
+              <button
+                type="submit"
+                class="btn-primary w-full py-3.5 px-5 rounded-xl bg-vanden-green hover:bg-vanden-greenDark text-white font-display font-bold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <span>Consultar Boletim</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Atalhos rápidos de matrículas de exemplo -->
+          <div class="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+            <span class="font-semibold">Testar matrículas rápidas:</span>
+            <button type="button" onclick="quickFillStudent('1024', 'E.M. Prof. Paulo Freire')" class="px-2.5 py-1 rounded-lg bg-vanden-greenLight hover:bg-emerald-200 text-vanden-greenDark font-bold transition">
+              #1024 (Paulo Freire)
+            </button>
+            <button type="button" onclick="quickFillStudent('2048', 'E.M. Monteiro Lobato')" class="px-2.5 py-1 rounded-lg bg-vanden-greenLight hover:bg-emerald-200 text-vanden-greenDark font-bold transition">
+              #2048 (Monteiro Lobato)
+            </button>
+            <button type="button" onclick="quickFillStudent('3150', 'C.E. Vandenópolis')" class="px-2.5 py-1 rounded-lg bg-vanden-greenLight hover:bg-emerald-200 text-vanden-greenDark font-bold transition">
+              #3150 (C.E. Vandenópolis)
+            </button>
+          </div>
+
+          <p id="student-search-error" role="alert" class="hidden mt-3 text-sm font-semibold text-red-700 bg-red-50 border border-red-200 px-4 py-2.5 rounded-xl"></p>
+
+          <!-- Resultado do Boletim Escolar -->
+          <div id="student-report-result" class="hidden mt-6 animate-fade-in border-2 border-vanden-green rounded-2xl overflow-hidden">
+            <div class="bg-vanden-greenLight p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-200">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md bg-vanden-green text-white text-xs font-extrabold" id="res-student-reg">MATRÍCULA #1024</span>
+                  <span class="text-xs font-bold text-vanden-greenDark" id="res-student-school">E.M. Prof. Paulo Freire</span>
+                </div>
+                <h3 class="font-display text-xl font-extrabold text-slate-900 mt-1" id="res-student-name">Lucas Gabriel Ferreira</h3>
+                <p class="text-sm text-slate-700 font-medium" id="res-student-grade">7º Ano B • Ensino Fundamental II • Turno: Manhã</p>
+              </div>
+
+              <!-- Indicador de Frequência -->
+              <div class="bg-white px-5 py-3 rounded-xl border border-emerald-200 shadow-sm flex items-center gap-3">
+                <div>
+                  <span class="block text-xs font-bold uppercase text-slate-500">Frequência Anual</span>
+                  <span class="text-2xl font-display font-extrabold text-vanden-green" id="res-student-attendance">96%</span>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold" id="res-attendance-badge">Regular</span>
+              </div>
+            </div>
+
+            <!-- Tabela Responsiva de Notas -->
+            <div class="overflow-x-auto bg-white">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-100 border-b border-slate-200 text-xs font-extrabold uppercase text-slate-700">
+                    <th scope="col" class="py-3.5 px-4">Componente Curricular</th>
+                    <th scope="col" class="py-3.5 px-3 text-center">1º Bim</th>
+                    <th scope="col" class="py-3.5 px-3 text-center">2º Bim</th>
+                    <th scope="col" class="py-3.5 px-3 text-center">3º Bim</th>
+                    <th scope="col" class="py-3.5 px-3 text-center">4º Bim</th>
+                    <th scope="col" class="py-3.5 px-3 text-center">Média</th>
+                    <th scope="col" class="py-3.5 px-4 text-right">Situação</th>
+                  </tr>
+                </thead>
+                <tbody id="res-grades-tbody" class="divide-y divide-slate-200 text-sm">
+                  <!-- Preenchido via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+
+        <!-- MÓDULO B: VAGAS DISPONÍVEIS NAS ESCOLAS E MATRÍCULA ONLINE -->
+        <article aria-labelledby="vacancies-heading" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5 mb-6">
+            <div>
+              <span class="inline-block px-3 py-1 rounded-full bg-vanden-greenLight text-vanden-greenDark text-xs font-extrabold mb-2">Ano Letivo • Vagas em Tempo Real</span>
+              <h2 id="vacancies-heading" class="font-display text-xl sm:text-2xl font-extrabold text-slate-900">
+                Vagas Escolares e Matrícula Online
+              </h2>
+              <p class="text-sm text-slate-600 mt-1">
+                Confira a disponibilidade de vagas nas unidades municipais de Vandenópolis e garanta a matrícula digital.
+              </p>
+            </div>
+
+            <!-- Filtro por Etapa de Ensino -->
+            <div class="shrink-0">
+              <label for="school-level-filter" class="block text-xs font-bold uppercase text-slate-500 mb-1">Filtrar por Etapa</label>
+              <select
+                id="school-level-filter"
+                onchange="renderSchoolsList()"
+                class="px-4 py-2.5 rounded-xl border-2 border-slate-300 bg-slate-50 text-slate-900 font-bold text-sm focus:border-vanden-green"
+              >
+                <option value="ALL">Todas as Etapas</option>
+                <option value="Educação Infantil">Educação Infantil</option>
+                <option value="Fundamental I">Ensino Fundamental I</option>
+                <option value="Fundamental II">Ensino Fundamental II</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Banner de Matrículas Confirmadas na Sessão -->
+          <div id="confirmed-enrollments-box" class="hidden mb-6 p-4 rounded-2xl bg-vanden-greenLight border-2 border-vanden-green">
+            <h3 class="font-display font-extrabold text-vanden-greenDark text-base flex items-center gap-2 mb-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Matrículas Realizadas neste Protocolo</span>
+            </h3>
+            <ul id="confirmed-enrollments-list" class="space-y-2 text-sm text-slate-800"></ul>
+          </div>
+
+          <!-- Lista de Escolas com Vagas -->
+          <div id="schools-vacancies-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Preenchido dinamicamente via JavaScript -->
+          </div>
+        </article>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- MODAL 1: REPORTAR POSTE APAGADO (ILUMINAÇÃO PÚBLICA) -->
+  <div id="light-report-modal" role="dialog" aria-modal="true" aria-labelledby="light-modal-title" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="light-modal-title" class="font-display text-xl font-extrabold text-slate-900">Reportar Ponto de Luz</h3>
+        <button type="button" onclick="closeLightReportModal()" aria-label="Fechar janela" class="p-2 rounded-xl hover:bg-slate-100 text-slate-500 font-bold">✕</button>
+      </div>
+      <form onsubmit="submitLightReport(event)" class="space-y-4">
+        <div>
+          <label for="light-sector" class="block text-sm font-bold text-slate-800 mb-1">Bairro / Setor</label>
+          <select id="light-sector" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white font-semibold">
+            <option value="Centro">Centro</option>
+            <option value="Jardim Verde">Jardim Verde</option>
+            <option value="Vila Sol">Vila Sol</option>
+            <option value="Parque Industrial">Parque Industrial</option>
+            <option value="Bela Vista">Bela Vista</option>
+          </select>
+        </div>
+        <div>
+          <label for="light-address" class="block text-sm font-bold text-slate-800 mb-1">Rua e Número de Referência</label>
+          <input type="text" id="light-address" required placeholder="Ex: Rua das Acácias, em frente ao nº 320" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white">
+        </div>
+        <div>
+          <label for="light-issue" class="block text-sm font-bold text-slate-800 mb-1">Problema Identificado</label>
+          <select id="light-issue" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white font-semibold">
+            <option value="Lâmpada LED apagada à noite">Lâmpada LED apagada à noite</option>
+            <option value="Lâmpada piscando intermitente">Lâmpada piscando intermitente</option>
+            <option value="Luminária acesa durante o dia">Luminária acesa durante o dia</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeLightReportModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm">Cancelar</button>
+          <button type="submit" class="btn-primary px-5 py-2.5 rounded-xl bg-vanden-green hover:bg-vanden-greenDark text-white font-bold text-sm">Enviar Solicitação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: REALIZAR MATRÍCULA ESCOLAR -->
+  <div id="enrollment-modal" role="dialog" aria-modal="true" aria-labelledby="enroll-modal-title" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 animate-fade-in max-h-[92vh] overflow-y-auto">
+      <div class="flex items-start justify-between gap-2 mb-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full bg-vanden-yellow text-slate-900 text-xs font-extrabold">Matrícula Digital</span>
+          <h3 id="enroll-modal-title" class="font-display text-xl font-extrabold text-slate-900 mt-1">Solicitar Vaga Escolar</h3>
+          <p id="enroll-school-subtitle" class="text-sm font-semibold text-vanden-green"></p>
+        </div>
+        <button type="button" onclick="closeEnrollmentModal()" aria-label="Fechar janela de matrícula" class="p-2 rounded-xl hover:bg-slate-100 text-slate-500 font-bold">✕</button>
+      </div>
+
+      <form onsubmit="submitEnrollment(event)" class="space-y-4">
+        <input type="hidden" id="enroll-school-id">
+
+        <div>
+          <label for="enroll-student-name" class="block text-sm font-bold text-slate-800 mb-1">Nome Completo do(a) Estudante</label>
+          <input type="text" id="enroll-student-name" required placeholder="Digite o nome completo do aluno" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="enroll-birth" class="block text-sm font-bold text-slate-800 mb-1">Data de Nascimento</label>
+            <input type="date" id="enroll-birth" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white">
+          </div>
+          <div>
+            <label for="enroll-shift" class="block text-sm font-bold text-slate-800 mb-1">Turno Preferencial</label>
+            <select id="enroll-shift" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white font-semibold">
+              <option value="Manhã">Manhã (07h30 - 12h00)</option>
+              <option value="Tarde">Tarde (13h00 - 17h30)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="enroll-grade" class="block text-sm font-bold text-slate-800 mb-1">Série / Ano Pretendido</label>
+          <select id="enroll-grade" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white font-semibold">
+            <option value="Pré-Escola (4 a 5 anos)">Educação Infantil — Pré-Escola</option>
+            <option value="1º Ano - Ensino Fundamental I">1º Ano — Ensino Fundamental I</option>
+            <option value="3º Ano - Ensino Fundamental I">3º Ano — Ensino Fundamental I</option>
+            <option value="6º Ano - Ensino Fundamental II">6º Ano — Ensino Fundamental II</option>
+            <option value="8º Ano - Ensino Fundamental II">8º Ano — Ensino Fundamental II</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="enroll-guardian" class="block text-sm font-bold text-slate-800 mb-1">Nome do Responsável</label>
+            <input type="text" id="enroll-guardian" required placeholder="Nome do pai, mãe ou tutor" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white">
+          </div>
+          <div>
+            <label for="enroll-guardian-cpf" class="block text-sm font-bold text-slate-800 mb-1">CPF do Responsável</label>
+            <input type="text" id="enroll-guardian-cpf" readonly class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 bg-slate-100 text-slate-700 font-semibold">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeEnrollmentModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm">Cancelar</button>
+          <button type="submit" class="btn-primary px-5 py-2.5 rounded-xl bg-vanden-green hover:bg-vanden-greenDark text-white font-bold text-sm shadow-sm">Confirmar Matrícula</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- NOTIFICAÇÃO TOAST ACESSÍVEL -->
+  <div id="toast-notification" role="status" aria-live="polite" class="hidden fixed bottom-5 right-5 z-50 max-w-sm bg-slate-900 text-white border-l-4 border-vanden-yellow px-5 py-4 rounded-2xl shadow-2xl flex items-start gap-3">
+    <span class="text-vanden-yellow text-lg font-bold" aria-hidden="true">✓</span>
+    <p id="toast-message" class="text-sm font-semibold leading-snug"></p>
+  </div>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="bg-white border-t border-slate-200 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-600">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-vanden-green"></span>
+        <span class="w-3 h-3 rounded-full bg-vanden-yellow"></span>
+        <span class="font-bold text-slate-800">Prefeitura Municipal de Vandenópolis</span>
+        <span>— Secretaria de Inovação e Cidade Inteligente</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 font-semibold">
+        <span>Central 156</span>
+        <span>Defesa Civil: 199</span>
+        <span>SAMU: 192</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LÓGICA INTERATIVA DA APLICAÇÃO -->
+  <script>
+    // ==========================================
+    // 1. CONTROLES DE ACESSIBILIDADE (WCAG)
+    // ==========================================
+    let currentFontSize = 16;
+
+    function changeFontSize(delta) {
+      currentFontSize = Math.min(22, Math.max(13, currentFontSize + delta));
+      document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+      showToast(`Tamanho do texto ajustado para ${Math.round((currentFontSize / 16) * 100)}%.`);
+    }
+
+    function resetFontSize() {
+      currentFontSize = 16;
+      document.documentElement.style.setProperty('--base-font-size', '16px');
+      showToast('Tamanho do texto restaurado para o padrão (100%).');
+    }
+
+    function toggleHighContrast() {
+      const isHC = document.body.classList.toggle('high-contrast');
+      const btn = document.getElementById('btn-contrast');
+      btn.setAttribute('aria-pressed', isHC ? 'true' : 'false');
+      showToast(isHC ? 'Modo Alto Contraste ativado.' : 'Modo Alto Contraste desativado.');
+    }
+
+    function toggleReadableSpacing() {
+      const isSpaced = document.body.classList.toggle('readable-spacing');
+      const btn = document.getElementById('btn-spacing');
+      btn.setAttribute('aria-pressed', isSpaced ? 'true' : 'false');
+      showToast(isSpaced ? 'Espaçamento ampliado para leitura ativado.' : 'Espaçamento padrão restaurado.');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast-notification');
+      const msgEl = document.getElementById('toast-message');
+      msgEl.textContent = message;
+      toast.classList.remove('hidden');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    // ==========================================
+    // 2. AUTENTICAÇÃO DO MORADOR POR CPF
+    // ==========================================
+    let authenticatedCPF = '';
+
+    const cpfInput = document.getElementById('cpf-input');
+    cpfInput.addEventListener('input', function (e) {
+      let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (digits.length > 9) {
+        digits = digits.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+      } else if (digits.length > 6) {
+        digits = digits.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+      } else if (digits.length > 3) {
+        digits = digits.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+      }
+      e.target.value = digits;
+    });
+
+    function fillDemoCPF() {
+      cpfInput.value = '418.925.730-09';
+      document.getElementById('cpf-error').classList.add('hidden');
+      cpfInput.focus();
+    }
+
+    function handleCitizenLogin(event) {
+      event.preventDefault();
+      const rawDigits = cpfInput.value.replace(/\D/g, '');
+      const errorBox = document.getElementById('cpf-error');
+
+      if (rawDigits.length !== 11) {
+        errorBox.textContent = 'Por favor, digite um CPF válido com 11 números.';
+        errorBox.classList.remove('hidden');
+        cpfInput.focus();
+        return;
+      }
+
+      errorBox.classList.add('hidden');
+      authenticatedCPF = cpfInput.value;
+
+      // Atualiza cabeçalho com CPF mascarado
+      const masked = `${rawDigits.slice(0, 3)}.***.***-${rawDigits.slice(9, 11)}`;
+      document.getElementById('display-citizen-cpf').textContent = `CPF: ${masked}`;
+      document.getElementById('user-header-info').classList.remove('hidden');
+      document.getElementById('user-header-info').classList.add('flex');
+
+      // Alterna telas
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('portal-dashboard').classList.remove('hidden');
+
+      renderLightingData();
+      renderSchoolsList();
+      showToast('Identificação confirmada! Bem-vindo(a) ao portal de Vandenópolis.');
+    }
+
+    function logoutCitizen() {
+      authenticatedCPF = '';
+      cpfInput.value = '';
+      document.getElementById('user-header-info').classList.add('hidden');
+      document.getElementById('user-header-info').classList.remove('flex');
+      document.getElementById('portal-dashboard').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+      showToast('Você saiu do Portal do Cidadão.');
+    }
+
+    // ==========================================
+    // 3. NAVEGAÇÃO ENTRE ABAS
+    // ==========================================
+    function switchTab(tabName) {
+      const btnCidade = document.getElementById('tab-btn-cidade');
+      const btnEducacao = document.getElementById('tab-btn-educacao');
+      const panelCidade = document.getElementById('panel-cidade');
+      const panelEducacao = document.getElementById('panel-educacao');
+
+      if (tabName === 'cidade') {
+        btnCidade.className = 'flex-1 min-w-[160px] py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 bg-vanden-green text-white shadow-sm transition';
+        btnCidade.setAttribute('aria-selected', 'true');
+
+        btnEducacao.className = 'flex-1 min-w-[160px] py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-vanden-yellowLight transition';
+        btnEducacao.setAttribute('aria-selected', 'false');
+
+        panelCidade.classList.remove('hidden');
+        panelEducacao.classList.add('hidden');
+      } else {
+        btnEducacao.className = 'flex-1 min-w-[160px] py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 bg-vanden-green text-white shadow-sm transition';
+        btnEducacao.setAttribute('aria-selected', 'true');
+
+        btnCidade.className = 'flex-1 min-w-[160px] py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-vanden-yellowLight transition';
+        btnCidade.setAttribute('aria-selected', 'false');
+
+        panelEducacao.classList.remove('hidden');
+        panelCidade.classList.add('hidden');
+      }
+    }
+
+    // ==========================================
+    // 4. ILUMINAÇÃO PÚBLICA INTELIGENTE
+    // ==========================================
+    const lightingSectors = [
+      { name: 'Centro', total: 3400, active: 3380 },
+      { name: 'Jardim Verde', total: 2950, active: 2925 },
+      { name: 'Vila Sol', total: 2600, active: 2568 },
+      { name: 'Parque Industrial', total: 2850, active: 2790 },
+      { name: 'Bela Vista', total: 2400, active: 2362 }
+    ];
+
+    const lightReports = [
+      { protocol: 'LUZ-8841', sector: 'Parque Industrial', address: 'Av. das Indústrias, alt. nº 910', issue: 'Lâmpada LED apagada à noite', status: 'Equipe em deslocamento' },
+      { protocol: 'LUZ-8839', sector: 'Vila Sol', address: 'Rua Girassol, nº 145', issue: 'Lâmpada piscando intermitente', status: 'Programado para hoje' }
+    ];
+
+    function renderLightingData() {
+      const grid = document.getElementById('neighborhood-lighting-grid');
+      let sumTotal = 0;
+      let sumActive = 0;
+
+      grid.innerHTML = lightingSectors.map(sec => {
+        sumTotal += sec.total;
+        sumActive += sec.active;
+        const pct = ((sec.active / sec.total) * 100).toFixed(1).replace('.', ',');
+        const isHigh = (sec.active / sec.total) >= 0.985;
+
+        return `
+          <div class="p-4 rounded-2xl border ${isHigh ? 'bg-emerald-50/60 border-emerald-200' : 'bg-amber-50/60 border-amber-200'}">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-sm text-slate-900">${sec.name}</span>
+              <span class="w-2.5 h-2.5 rounded-full ${isHigh ? 'bg-vanden-green' : 'bg-amber-500'}" aria-hidden="true"></span>
+            </div>
+            <p class="text-2xl font-display font-extrabold ${isHigh ? 'text-vanden-green' : 'text-amber-800'}">${pct}%</p>
+            <p class="text-xs text-slate-600 mt-1">${sec.active.toLocaleString('pt-BR')} / ${sec.total.toLocaleString('pt-BR')} postes LED</p>
+          </div>
+        `;
+      }).join('');
+
+      const overall = ((sumActive / sumTotal) * 100).toFixed(1).replace('.', ',');
+      document.getElementById('lighting-overall-pct').textContent = `${overall}% Ativo`;
+
+      const list = document.getElementById('light-reports-list');
+      list.innerHTML = lightReports.map(rep => `
+        <li class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-extrabold px-2 py-0.5 rounded bg-vanden-yellowLight text-amber-900 border border-amber-300">${rep.protocol}</span>
+              <span class="text-xs font-bold text-slate-700">${rep.sector}</span>
+            </div>
+            <p class="text-sm font-bold text-slate-900 mt-1">${rep.address}</p>
+            <p class="text-xs text-slate-600">${rep.issue}</p>
+          </div>
+          <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 shrink-0">${rep.status}</span>
+        </li>
+      `).join('');
+    }
+
+    function openLightReportModal() {
+      document.getElementById('light-report-modal').classList.remove('hidden');
+      document.getElementById('light-address').focus();
+    }
+
+    function closeLightReportModal() {
+      document.getElementById('light-report-modal').classList.add('hidden');
+    }
+
+    function submitLightReport(event) {
+      event.preventDefault();
+      const sector = document.getElementById('light-sector').value;
+      const address = document.getElementById('light-address').value.trim();
+      const issue = document.getElementById('light-issue').value;
+      const protocol = 'LUZ-' + Math.floor(1000 + Math.random() * 9000);
+
+      lightReports.unshift({
+        protocol,
+        sector,
+        address,
+        issue,
+        status: 'Registrado agora'
+      });
+
+      const targetSector = lightingSectors.find(s => s.name === sector);
+      if (targetSector && targetSector.active > 0) {
+        targetSector.active -= 1;
+      }
+
+      renderLightingData();
+      document.getElementById('light-address').value = '';
+      closeLightReportModal();
+      showToast(`Chamado ${protocol} registrado! Equipe de iluminação notificada.`);
+    }
+
+    // ==========================================
+    // 5. PORTAL DA EDUCAÇÃO: BOLETIM E FREQUÊNCIA
+    // ==========================================
+    const mockStudentsDB = {
+      '1024': {
+        name: 'Lucas Gabriel Ferreira',
+        grade: '7º Ano B • Ensino Fundamental II • Turno: Manhã',
+        attendance: 96,
+        subjects: [
+          { name: 'Língua Portuguesa', b1: 8.5, b2: 9.0, b3: 8.8, b4: 9.2 },
+          { name: 'Matemática', b1: 8.0, b2: 8.5, b3: 9.0, b4: 9.0 },
+          { name: 'Ciências da Natureza', b1: 9.2, b2: 9.4, b3: 9.0, b4: 9.5 },
+          { name: 'História', b1: 8.8, b2: 8.5, b3: 8.7, b4: 9.0 },
+          { name: 'Geografia', b1: 9.0, b2: 8.8, b3: 9.1, b4: 9.3 },
+          { name: 'Educação Física', b1: 10.0, b2: 9.5, b3: 10.0, b4: 10.0 }
+        ]
+      },
+      '2048': {
+        name: 'Mariana Costa Oliveira',
+        grade: '5º Ano A • Ensino Fundamental I • Turno: Tarde',
+        attendance: 98,
+        subjects: [
+          { name: 'Língua Portuguesa', b1: 9.5, b2: 9.2, b3: 9.6, b4: 9.8 },
+          { name: 'Matemática', b1: 9.0, b2: 9.4, b3: 9.2, b4: 9.5 },
+          { name: 'Ciências da Natureza', b1: 9.3, b2: 9.5, b3: 9.7, b4: 9.6 },
+          { name: 'História', b1: 9.0, b2: 9.1, b3: 9.4, b4: 9.5 },
+          { name: 'Geografia', b1: 8.9, b2: 9.2, b3: 9.3, b4: 9.4 },
+          { name: 'Artes e Cultura', b1: 9.8, b2: 10.0, b3: 9.8, b4: 10.0 }
+        ]
+      },
+      '3150': {
+        name: 'Pedro Henrique Santos',
+        grade: '9º Ano C • Ensino Fundamental II • Turno: Manhã',
+        attendance: 91,
+        subjects: [
+          { name: 'Língua Portuguesa', b1: 7.5, b2: 8.0, b3: 7.8, b4: 8.2 },
+          { name: 'Matemática', b1: 7.0, b2: 7.5, b3: 8.0, b4: 8.5 },
+          { name: 'Ciências da Natureza', b1: 8.2, b2: 8.0, b3: 8.4, b4: 8.6 },
+          { name: 'História', b1: 8.5, b2: 8.8, b3: 8.5, b4: 9.0 },
+          { name: 'Geografia', b1: 8.0, b2: 8.2, b3: 8.5, b4: 8.7 },
+          { name: 'Língua Inglesa', b1: 9.0, b2: 9.2, b3: 9.0, b4: 9.4 }
+        ]
+      }
+    };
+
+    const regInput = document.getElementById('student-reg-input');
+    regInput.addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    function quickFillStudent(reg, school) {
+      document.getElementById('student-reg-input').value = reg;
+      document.getElementById('student-school-select').value = school;
+      handleStudentSearch(new Event('submit'));
+    }
+
+    function generateDynamicStudent(reg) {
+      const seed = parseInt(reg, 10);
+      const names = ['Ana Clara Mendes', 'Rafael Augusto Lima', 'Beatriz Souza Rocha', 'Gabriel Martins Alves', 'Sofia Helena Cardoso'];
+      const grades = ['4º Ano A • Ensino Fundamental I', '6º Ano B • Ensino Fundamental II', '8º Ano A • Ensino Fundamental II'];
+      const baseGrade = 7.2 + ((seed % 20) / 10);
+
+      const makeScore = (offset) => Math.min(10, Math.max(6.5, +(baseGrade + offset).toFixed(1)));
+
+      return {
+        name: names[seed % names.length],
+        grade: `${grades[seed % grades.length]} • Turno: Manhã`,
+        attendance: 90 + (seed % 10),
+        subjects: [
+          { name: 'Língua Portuguesa', b1: makeScore(0.2), b2: makeScore(0.4), b3: makeScore(0.3), b4: makeScore(0.6) },
+          { name: 'Matemática', b1: makeScore(-0.2), b2: makeScore(0.1), b3: makeScore(0.4), b4: makeScore(0.5) },
+          { name: 'Ciências da Natureza', b1: makeScore(0.3), b2: makeScore(0.5), b3: makeScore(0.4), b4: makeScore(0.7) },
+          { name: 'História', b1: makeScore(0.1), b2: makeScore(0.3), b3: makeScore(0.5), b4: makeScore(0.5) },
+          { name: 'Geografia', b1: makeScore(0.0), b2: makeScore(0.2), b3: makeScore(0.4), b4: makeScore(0.6) },
+          { name: 'Educação Física', b1: 9.5, b2: 9.5, b3: 10.0, b4: 10.0 }
+        ]
+      };
+    }
+
+    function handleStudentSearch(event) {
+      if (event) event.preventDefault();
+      const reg = document.getElementById('student-reg-input').value.trim();
+      const school = document.getElementById('student-school-select').value;
+      const errorEl = document.getElementById('student-search-error');
+
+      if (!/^\d{4}$/.test(reg)) {
+        errorEl.textContent = 'O Registro de Matrícula deve conter exatamente 4 números (exemplo: 1024).';
+        errorEl.classList.remove('hidden');
+        document.getElementById('student-reg-input').focus();
+        return;
+      }
+
+      errorEl.classList.add('hidden');
+      const student = mockStudentsDB[reg] || generateDynamicStudent(reg);
+
+      document.getElementById('res-student-reg').textContent = `MATRÍCULA #${reg}`;
+      document.getElementById('res-student-school').textContent = school;
+      document.getElementById('res-student-name').textContent = student.name;
+      document.getElementById('res-student-grade').textContent = student.grade;
+      document.getElementById('res-student-attendance').textContent = `${student.attendance}%`;
+      document.getElementById('res-attendance-badge').textContent = student.attendance >= 75 ? 'Frequência Regular' : 'Atenção';
+
+      const tbody = document.getElementById('res-grades-tbody');
+      tbody.innerHTML = student.subjects.map(sub => {
+        const avg = ((sub.b1 + sub.b2 + sub.b3 + sub.b4) / 4).toFixed(1);
+        const approved = parseFloat(avg) >= 6.0;
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4 font-bold text-slate-900">${sub.name}</td>
+            <td class="py-3 px-3 text-center font-medium">${sub.b1.toFixed(1)}</td>
+            <td class="py-3 px-3 text-center font-medium">${sub.b2.toFixed(1)}</td>
+            <td class="py-3 px-3 text-center font-medium">${sub.b3.toFixed(1)}</td>
+            <td class="py-3 px-3 text-center font-medium">${sub.b4.toFixed(1)}</td>
+            <td class="py-3 px-3 text-center font-extrabold text-vanden-green">${avg}</td>
+            <td class="py-3 px-4 text-right">
+              <span class="px-2.5 py-1 rounded-full text-xs font-extrabold ${approved ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}">
+                ${approved ? 'Aprovado' : 'Recuperação'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('student-report-result').classList.remove('hidden');
+      showToast(`Boletim escolar da matrícula #${reg} carregado.`);
+    }
+
+    // ==========================================
+    // 6. VAGAS ESCOLARES E MATRÍCULA ONLINE
+    // ==========================================
+    const schoolsCatalog = [
+      {
+        id: 'esc-1',
+        name: 'E.M. Prof. Paulo Freire',
+        neighborhood: 'Centro — Av. das Palmeiras, 450',
+        levels: ['Fundamental I', 'Fundamental II'],
+        totalCapacity: 600,
+        availableSpots: 18
+      },
+      {
+        id: 'esc-2',
+        name: 'E.M. Monteiro Lobato',
+        neighborhood: 'Jardim Verde — Rua das Flores, 120',
+        levels: ['Educação Infantil', 'Fundamental I'],
+        totalCapacity: 450,
+        availableSpots: 12
+      },
+      {
+        id: 'esc-3',
+        name: 'E.M. Tiradentes',
+        neighborhood: 'Vila Sol — Rua Aurora, 880',
+        levels: ['Educação Infantil', 'Fundamental I', 'Fundamental II'],
+        totalCapacity: 720,
+        availableSpots: 5
+      },
+      {
+        id: 'esc-4',
+        name: 'C.E. Vandenópolis',
+        neighborhood: 'Bela Vista — Av. Independência, 1100',
+        levels: ['Fundamental II'],
+        totalCapacity: 540,
+        availableSpots: 0
+      }
+    ];
+
+    function renderSchoolsList() {
+      const filter = document.getElementById('school-level-filter').value;
+      const grid = document.getElementById('schools-vacancies-grid');
+
+      const filtered = filter === 'ALL'
+        ? schoolsCatalog
+        : schoolsCatalog.filter(s => s.levels.includes(filter));
+
+      grid.innerHTML = filtered.map(school => {
+        const hasSpots = school.availableSpots > 0;
+        const lowSpots = school.availableSpots > 0 && school.availableSpots <= 6;
+
+        return `
+          <div class="p-5 rounded-2xl border-2 ${hasSpots ? 'border-slate-200 bg-white' : 'border-slate-200 bg-slate-50 opacity-85'} flex flex-col justify-between gap-4 shadow-sm">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-display text-lg font-extrabold text-slate-900">${school.name}</h3>
+                <span class="px-3 py-1 rounded-full text-xs font-extrabold shrink-0 ${
+                  !hasSpots
+                    ? 'bg-slate-200 text-slate-700'
+                    : lowSpots
+                      ? 'bg-vanden-yellowLight text-amber-900 border border-amber-300'
+                      : 'bg-vanden-greenLight text-vanden-greenDark border border-emerald-200'
+                }">
+                  ${hasSpots ? `${school.availableSpots} vagas abertas` : 'Turmas Lotadas'}
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 mt-1 flex items-center gap-1">
+                <span aria-hidden="true">📍</span> ${school.neighborhood}
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mt-3">
+                ${school.levels.map(lvl => `
+                  <span class="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200">${lvl}</span>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+              <span class="text-xs text-slate-500 font-medium">Capacidade: ${school.totalCapacity} alunos</span>
+              ${hasSpots ? `
+                <button
+                  type="button"
+                  onclick="openEnrollmentModal('${school.id}')"
+                  class="btn-primary px-4 py-2.5 rounded-xl bg-vanden-green hover:bg-vanden-greenDark text-white font-bold text-xs sm:text-sm shadow-sm transition"
+                >
+                  Realizar Matrícula
+                </button>
+              ` : `
+                <button
+                  type="button"
+                  disabled
+                  class="px-4 py-2.5 rounded-xl bg-slate-200 text-slate-500 font-bold text-xs sm:text-sm cursor-not-allowed"
+                >
+                  Sem Vagas
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openEnrollmentModal(schoolId) {
+      const school = schoolsCatalog.find(s => s.id === schoolId);
+      if (!school || school.availableSpots <= 0) return;
+
+      document.getElementById('enroll-school-id').value = school.id;
+      document.getElementById('enroll-school-subtitle').textContent = `${school.name} (${school.availableSpots} vagas restantes)`;
+      document.getElementById('enroll-guardian-cpf').value = authenticatedCPF || '418.925.730-09';
+      document.getElementById('enrollment-modal').classList.remove('hidden');
+      document.getElementById('enroll-student-name').focus();
+    }
+
+    function closeEnrollmentModal() {
+      document.getElementById('enrollment-modal').classList.add('hidden');
+    }
+
+    function submitEnrollment(event) {
+      event.preventDefault();
+      const schoolId = document.getElementById('enroll-school-id').value;
+      const studentName = document.getElementById('enroll-student-name').value.trim();
+      const grade = document.getElementById('enroll-grade').value;
+      const shift = document.getElementById('enroll-shift').value;
+
+      const school = schoolsCatalog.find(s => s.id === schoolId);
+      if (school && school.availableSpots > 0) {
+        school.availableSpots -= 1;
+      }
+
+      const newReg = Math.floor(4000 + Math.random() * 5999);
+      const protocol = `MAT-2026-${newReg}`;
+
+      // Adiciona ao painel de matrículas confirmadas
+      const box = document.getElementById('confirmed-enrollments-box');
+      const list = document.getElementById('confirmed-enrollments-list');
+      box.classList.remove('hidden');
+
+      const li = document.createElement('li');
+      li.className = 'bg-white p-3 rounded-xl border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2';
+      li.innerHTML = `
+        <div>
+          <strong class="text-slate-900">${studentName}</strong> — ${school.name} (${grade} • ${shift})
+        </div>
+        <span class="px-2.5 py-1 rounded-lg bg-vanden-yellow text-slate-900 font-extrabold text-xs shrink-0">
+          Protocolo: ${protocol} • Matrícula: #${newReg}
+        </span>
+      `;
+      list.prepend(li);
+
+      // Limpa e fecha modal
+      document.getElementById('enroll-student-name').value = '';
+      document.getElementById('enroll-birth').value = '';
+      document.getElementById('enroll-guardian').value = '';
+      closeEnrollmentModal();
+      renderSchoolsList();
+
+      showToast(`Matrícula de ${studentName} confirmada! Protocolo ${protocol}.`);
+    }
+  </script>
+</body>
+</html>
